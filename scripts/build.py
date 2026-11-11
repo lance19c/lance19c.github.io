@@ -58,12 +58,16 @@ def parse(raw):
 def promotable(product):
     # Existing ornaments use a costly supplier; do not promote them automatically.
     # Set the cutoff only after the cheaper fulfillment mapping is deployed.
+    policy = ROOT / 'quality-policy.json'
+    rules = json.loads(policy.read_text()) if policy.exists() else {}
+    if product.get('id') in rules.get('blocked_listing_ids', []):
+        return False
     if 'ornament' not in product.get('title', '').lower():
         return True
     policy = ROOT / 'quality-policy.json'
     if not policy.exists():
         return False
-    cutoff = json.loads(policy.read_text()).get('ornaments_created_after')
+    cutoff = rules.get('ornaments_created_after')
     try:
         return bool(cutoff) and parsedate_to_datetime(product.get('source_date', '')) >= dt.datetime.fromisoformat(cutoff)
     except (ValueError, TypeError):

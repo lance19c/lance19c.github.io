@@ -22,4 +22,14 @@ class CatalogTests(unittest.TestCase):
   self.assertFalse(build.safe_image('https://i.etsystatic.com.evil.test/p.jpg'))
   self.assertFalse(build.safe_image('https://user:pass@i.etsystatic.com/p.jpg'))
   self.assertTrue(build.safe_image('https://i.etsystatic.com/p.jpg'))
+ def test_legacy_ornaments_are_blocked_even_if_title_changes(self):
+  import tempfile
+  from pathlib import Path
+  from unittest.mock import patch
+  with tempfile.TemporaryDirectory() as folder:
+   Path(folder,'quality-policy.json').write_text('{"blocked_listing_ids":["123"],"ornaments_created_after":"2026-11-11T21:59:18+00:00"}')
+   with patch.object(build,'ROOT',Path(folder)):
+    self.assertFalse(build.promotable({'id':'123','title':'Holiday gift'}))
+    self.assertFalse(build.promotable({'id':'124','title':'Ceramic ornament','source_date':'Wed, 11 Nov 2026 20:00:00 +0000'}))
+    self.assertTrue(build.promotable({'id':'125','title':'Ceramic ornament','source_date':'Thu, 12 Nov 2026 20:00:00 +0000'}))
 if __name__=='__main__':unittest.main()
