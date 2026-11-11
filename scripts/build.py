@@ -4,6 +4,7 @@ import html
 from html.parser import HTMLParser
 import json
 import os
+from email.utils import parsedate_to_datetime
 from pathlib import Path
 import re
 import urllib.request
@@ -54,13 +55,27 @@ def parse(raw):
     if not result:raise ValueError('feed has no usable own-shop products; previous site retained')
     return result
 
+def promotable(product):
+    # Existing ornaments use a costly supplier; do not promote them automatically.
+    # Set the cutoff only after the cheaper fulfillment mapping is deployed.
+    if 'ornament' not in product.get('title', '').lower():
+        return True
+    policy = ROOT / 'quality-policy.json'
+    if not policy.exists():
+        return False
+    cutoff = json.loads(policy.read_text()).get('ornaments_created_after')
+    try:
+        return bool(cutoff) and parsedate_to_datetime(product.get('source_date', '')) >= dt.datetime.fromisoformat(cutoff)
+    except (ValueError, TypeError):
+        return False
+
 def schedule(products,state,now):
     """At most two newly exposed feed items per UTC day; stable IDs prevent repeats."""
     state=dict(state);published=dict(state.get('published',{}));day=now.date().isoformat()
     room=max(0,LIMIT-sum(v[:10]==day for v in published.values()))
     for ident in products:
         if room<=0:break
-        if ident not in published:
+        if ident not in published and promotable(products[ident]):
             published[ident]=now.isoformat();room-=1
     state['published']=published
     return state
@@ -82,7 +97,7 @@ def render(products,state,verify=''):
     rss=ET.Element('rss',{'version':'2.0'});channel=ET.SubElement(rss,'channel')
     for key,val in [('title','Cowling Trading Co — new designs'),('link',BASE),('description','Our own products, with details and checkout on Etsy.')]:ET.SubElement(channel,key).text=val
     for ident,stamp in state.get('published',{}).items():
-        if ident not in products:continue
+        if ident not in products or not promotable(products[ident]):continue
         p=products[ident];item=ET.SubElement(channel,'item');link=f'{BASE}/products/{ident}.html'
         for key,val in [('title',p['title']),('link',link),('guid',link),('description',p['description']),('pubDate',dt.datetime.fromisoformat(stamp).strftime('%a, %d %b %Y %H:%M:%S GMT'))]:ET.SubElement(item,key).text=val
         ET.SubElement(item,'enclosure',{'url':p['image'],'type':'image/jpeg','length':'0'})
