@@ -99,7 +99,7 @@ def render(products,state,verify=''):
     for ident,stamp in state.get('published',{}).items():
         if ident not in products or not promotable(products[ident]):continue
         p=products[ident];item=ET.SubElement(channel,'item');link=f'{BASE}/products/{ident}.html'
-        for key,val in [('title',p['title']),('link',link),('guid',link),('description',p['description']),('pubDate',dt.datetime.fromisoformat(stamp).strftime('%a, %d %b %Y %H:%M:%S GMT'))]:ET.SubElement(item,key).text=val
+        for key,val in [('title',p['title'][:100]),('link',link),('guid',link),('description',('Printed to order. Design created with AI assistance from original prompts. '+p['description'])[:500]),('pubDate',dt.datetime.fromisoformat(stamp).strftime('%a, %d %b %Y %H:%M:%S GMT'))]:ET.SubElement(item,key).text=val
         ET.SubElement(item,'enclosure',{'url':p['image'],'type':'image/jpeg','length':'0'})
     out['feed.xml']=ET.tostring(rss,encoding='unicode',xml_declaration=True)
     return out
@@ -113,6 +113,7 @@ def main():
     now=dt.datetime.now(dt.timezone.utc);state=schedule(products,state,now)
     verify=(ROOT/'pinterest-verification.txt').read_text().strip() if (ROOT/'pinterest-verification.txt').exists() else ''
     output=render(products,state,verify)
+    output['status.json']=json.dumps({'refreshed_at':now.isoformat(),'source':'public Etsy shop RSS','current_products':len(products),'daily_new_feed_limit':LIMIT,'feed_items':len(ET.fromstring(output['feed.xml']).findall('./channel/item'))},indent=2)+'\n'
     # Validate all inputs before replacing any generated file. Keep product pages for
     # previously published Pins even when they drop out of Etsy's ten-item RSS window.
     for name,text in output.items():
