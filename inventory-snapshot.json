@@ -1,7 +1,7 @@
 {
   "version": 1,
   "source": "etsy-active-listings-read",
-  "observed_at": "2026-11-25T21:06:26.758670+00:00",
+  "observed_at": "2026-11-25T21:23:14.937062+00:00",
   "shop_url": "https://www.etsy.com/shop/CowlingTradingCo",
   "shop_id": 68595983,
   "pages": 2,
@@ -616,17 +616,17 @@
       },
       "images": [
         {
-          "listing_image_id": 8883449863,
+          "listing_image_id": 8975397835,
           "rank": 1,
-          "url_fullxfull": "https://i.etsystatic.com/68595983/r/il/3782fc/8883449863/il_fullxfull.8883449863_lzvy.jpg"
+          "url_fullxfull": "https://i.etsystatic.com/68595983/r/il/17ee77/8975397835/il_fullxfull.8975397835_o0tz.jpg"
         }
       ],
-      "public_image_count": 1,
+      "public_image_count": 4,
       "original_creation_timestamp": 1794369822,
       "created_timestamp": 1794369830,
       "creation_timestamp": 1794369830,
-      "updated_timestamp": 1794373825,
-      "last_modified_timestamp": 1794373825
+      "updated_timestamp": 1795641688,
+      "last_modified_timestamp": 1795641688
     },
     {
       "listing_id": 4614495003,
@@ -644,17 +644,17 @@
       },
       "images": [
         {
-          "listing_image_id": 8835181146,
+          "listing_image_id": 8975397601,
           "rank": 1,
-          "url_fullxfull": "https://i.etsystatic.com/68595983/r/il/7f4b01/8835181146/il_fullxfull.8835181146_x0ux.jpg"
+          "url_fullxfull": "https://i.etsystatic.com/68595983/r/il/d4127d/8975397601/il_fullxfull.8975397601_suzd.jpg"
         }
       ],
-      "public_image_count": 1,
+      "public_image_count": 4,
       "original_creation_timestamp": 1794362560,
       "created_timestamp": 1794362569,
       "creation_timestamp": 1794362569,
-      "updated_timestamp": 1794366429,
-      "last_modified_timestamp": 1794366429
+      "updated_timestamp": 1795641685,
+      "last_modified_timestamp": 1795641685
     },
     {
       "listing_id": 4614434083,
@@ -681,8 +681,8 @@
       "original_creation_timestamp": 1794355320,
       "created_timestamp": 1794355326,
       "creation_timestamp": 1794355326,
-      "updated_timestamp": 1795637672,
-      "last_modified_timestamp": 1795637672
+      "updated_timestamp": 1795641562,
+      "last_modified_timestamp": 1795641562
     },
     {
       "listing_id": 4613920880,
@@ -728,17 +728,17 @@
       },
       "images": [
         {
-          "listing_image_id": 8877829861,
+          "listing_image_id": 8975397267,
           "rank": 1,
-          "url_fullxfull": "https://i.etsystatic.com/68595983/r/il/d3e7c5/8877829861/il_fullxfull.8877829861_qpns.jpg"
+          "url_fullxfull": "https://i.etsystatic.com/68595983/r/il/2df4a6/8975397267/il_fullxfull.8975397267_sk9a.jpg"
         }
       ],
-      "public_image_count": 1,
+      "public_image_count": 4,
       "original_creation_timestamp": 1794297952,
       "created_timestamp": 1794297957,
       "creation_timestamp": 1794297957,
-      "updated_timestamp": 1794301545,
-      "last_modified_timestamp": 1794301545
+      "updated_timestamp": 1795641681,
+      "last_modified_timestamp": 1795641681
     },
     {
       "listing_id": 4613805865,
@@ -756,17 +756,17 @@
       },
       "images": [
         {
-          "listing_image_id": 8877408045,
+          "listing_image_id": 8927618066,
           "rank": 1,
-          "url_fullxfull": "https://i.etsystatic.com/68595983/r/il/5b4a5d/8877408045/il_fullxfull.8877408045_uqie.jpg"
+          "url_fullxfull": "https://i.etsystatic.com/68595983/r/il/91a10c/8927618066/il_fullxfull.8927618066_1mr5.jpg"
         }
       ],
-      "public_image_count": 1,
+      "public_image_count": 4,
       "original_creation_timestamp": 1794290747,
       "created_timestamp": 1794290754,
       "creation_timestamp": 1794290754,
-      "updated_timestamp": 1794293864,
-      "last_modified_timestamp": 1794293864
+      "updated_timestamp": 1795641679,
+      "last_modified_timestamp": 1795641679
     },
     {
       "listing_id": 4613779136,
@@ -812,17 +812,17 @@
       },
       "images": [
         {
-          "listing_image_id": 8876557351,
+          "listing_image_id": 8975388451,
           "rank": 1,
-          "url_fullxfull": "https://i.etsystatic.com/68595983/r/il/ed7301/8876557351/il_fullxfull.8876557351_g94n.jpg"
+          "url_fullxfull": "https://i.etsystatic.com/68595983/r/il/24127f/8975388451/il_fullxfull.8975388451_tlb0.jpg"
         }
       ],
-      "public_image_count": 1,
+      "public_image_count": 4,
       "original_creation_timestamp": 1794276288,
       "created_timestamp": 1794276295,
       "creation_timestamp": 1794276295,
-      "updated_timestamp": 1794279299,
-      "last_modified_timestamp": 1794279299
+      "updated_timestamp": 1795641576,
+      "last_modified_timestamp": 1795641576
     },
     {
       "listing_id": 4613644449,
@@ -868,17 +868,17 @@
       },
       "images": [
         {
-          "listing_image_id": 8873865809,
+          "listing_image_id": 8975388167,
           "rank": 1,
-          "url_fullxfull": "https://i.etsystatic.com/68595983/r/il/70411c/8873865809/il_fullxfull.8873865809_1608.jpg"
+          "url_fullxfull": "https://i.etsystatic.com/68595983/r/il/d0c9ff/8975388167/il_fullxfull.8975388167_kzsk.jpg"
         }
       ],
-      "public_image_count": 1,
+      "public_image_count": 4,
       "original_creation_timestamp": 1794243882,
       "created_timestamp": 1794243890,
       "creation_timestamp": 1794243890,
-      "updated_timestamp": 1794247839,
-      "last_modified_timestamp": 1794247839
+      "updated_timestamp": 1795641573,
+      "last_modified_timestamp": 1795641573
     },
     {
       "listing_id": 4613292093,
@@ -952,17 +952,17 @@
       },
       "images": [
         {
-          "listing_image_id": 8870694091,
+          "listing_image_id": 8927608916,
           "rank": 1,
-          "url_fullxfull": "https://i.etsystatic.com/68595983/r/il/8bd1fb/8870694091/il_fullxfull.8870694091_qiw4.jpg"
+          "url_fullxfull": "https://i.etsystatic.com/68595983/r/il/70a367/8927608916/il_fullxfull.8927608916_30h3.jpg"
         }
       ],
-      "public_image_count": 1,
+      "public_image_count": 4,
       "original_creation_timestamp": 1794197129,
       "created_timestamp": 1794197133,
       "creation_timestamp": 1794197133,
-      "updated_timestamp": 1794200642,
-      "last_modified_timestamp": 1794200642
+      "updated_timestamp": 1795641570,
+      "last_modified_timestamp": 1795641570
     },
     {
       "listing_id": 4612955734,
@@ -1008,17 +1008,17 @@
       },
       "images": [
         {
-          "listing_image_id": 8869810839,
+          "listing_image_id": 8975387507,
           "rank": 1,
-          "url_fullxfull": "https://i.etsystatic.com/68595983/r/il/091b15/8869810839/il_fullxfull.8869810839_fakf.jpg"
+          "url_fullxfull": "https://i.etsystatic.com/68595983/r/il/4ca544/8975387507/il_fullxfull.8975387507_50n3.jpg"
         }
       ],
-      "public_image_count": 1,
+      "public_image_count": 4,
       "original_creation_timestamp": 1794182591,
       "created_timestamp": 1794182594,
       "creation_timestamp": 1794182594,
-      "updated_timestamp": 1794185827,
-      "last_modified_timestamp": 1794185827
+      "updated_timestamp": 1795641566,
+      "last_modified_timestamp": 1795641566
     },
     {
       "listing_id": 4612440955,
@@ -1092,17 +1092,17 @@
       },
       "images": [
         {
-          "listing_image_id": 8865646295,
+          "listing_image_id": 8927608378,
           "rank": 1,
-          "url_fullxfull": "https://i.etsystatic.com/68595983/r/il/4bd3fc/8865646295/il_fullxfull.8865646295_31js.jpg"
+          "url_fullxfull": "https://i.etsystatic.com/68595983/r/il/a17859/8927608378/il_fullxfull.8927608378_irut.jpg"
         }
       ],
-      "public_image_count": 1,
+      "public_image_count": 4,
       "original_creation_timestamp": 1794118019,
       "created_timestamp": 1794118025,
       "creation_timestamp": 1794118025,
-      "updated_timestamp": 1794122179,
-      "last_modified_timestamp": 1794122179
+      "updated_timestamp": 1795641564,
+      "last_modified_timestamp": 1795641564
     },
     {
       "listing_id": 4612347289,
@@ -1148,17 +1148,17 @@
       },
       "images": [
         {
-          "listing_image_id": 8865014433,
+          "listing_image_id": 8975375675,
           "rank": 1,
-          "url_fullxfull": "https://i.etsystatic.com/68595983/r/il/42fa64/8865014433/il_fullxfull.8865014433_avbg.jpg"
+          "url_fullxfull": "https://i.etsystatic.com/68595983/r/il/af66ad/8975375675/il_fullxfull.8975375675_6r3d.jpg"
         }
       ],
-      "public_image_count": 1,
+      "public_image_count": 4,
       "original_creation_timestamp": 1794103546,
       "created_timestamp": 1794103551,
       "creation_timestamp": 1794103551,
-      "updated_timestamp": 1794106924,
-      "last_modified_timestamp": 1794106924
+      "updated_timestamp": 1795641432,
+      "last_modified_timestamp": 1795641432
     },
     {
       "listing_id": 4612273352,
@@ -1204,17 +1204,17 @@
       },
       "images": [
         {
-          "listing_image_id": 8814995092,
+          "listing_image_id": 8975374969,
           "rank": 1,
-          "url_fullxfull": "https://i.etsystatic.com/68595983/r/il/416363/8814995092/il_fullxfull.8814995092_8qyi.jpg"
+          "url_fullxfull": "https://i.etsystatic.com/68595983/r/il/1d5d10/8975374969/il_fullxfull.8975374969_nggh.jpg"
         }
       ],
-      "public_image_count": 1,
+      "public_image_count": 4,
       "original_creation_timestamp": 1794071277,
       "created_timestamp": 1794071280,
       "creation_timestamp": 1794071280,
-      "updated_timestamp": 1794074668,
-      "last_modified_timestamp": 1794074668
+      "updated_timestamp": 1795641424,
+      "last_modified_timestamp": 1795641424
     },
     {
       "listing_id": 4611963424,
@@ -1260,17 +1260,17 @@
       },
       "images": [
         {
-          "listing_image_id": 8812624198,
+          "listing_image_id": 8927595682,
           "rank": 1,
-          "url_fullxfull": "https://i.etsystatic.com/68595983/r/il/87e02d/8812624198/il_fullxfull.8812624198_4w19.jpg"
+          "url_fullxfull": "https://i.etsystatic.com/68595983/r/il/a04c90/8927595682/il_fullxfull.8927595682_m6zx.jpg"
         }
       ],
-      "public_image_count": 1,
+      "public_image_count": 4,
       "original_creation_timestamp": 1794031513,
       "created_timestamp": 1794031517,
       "creation_timestamp": 1794031517,
-      "updated_timestamp": 1794035595,
-      "last_modified_timestamp": 1794035595
+      "updated_timestamp": 1795641420,
+      "last_modified_timestamp": 1795641420
     },
     {
       "listing_id": 4611707312,
@@ -1288,17 +1288,17 @@
       },
       "images": [
         {
-          "listing_image_id": 8812291954,
+          "listing_image_id": 8975374365,
           "rank": 1,
-          "url_fullxfull": "https://i.etsystatic.com/68595983/r/il/2ae22a/8812291954/il_fullxfull.8812291954_t3en.jpg"
+          "url_fullxfull": "https://i.etsystatic.com/68595983/r/il/d57b4c/8975374365/il_fullxfull.8975374365_for0.jpg"
         }
       ],
-      "public_image_count": 1,
+      "public_image_count": 4,
       "original_creation_timestamp": 1794024292,
       "created_timestamp": 1794024296,
       "creation_timestamp": 1794024296,
-      "updated_timestamp": 1794028009,
-      "last_modified_timestamp": 1794028009
+      "updated_timestamp": 1795641418,
+      "last_modified_timestamp": 1795641418
     },
     {
       "listing_id": 4611658972,
@@ -1316,17 +1316,17 @@
       },
       "images": [
         {
-          "listing_image_id": 8859727337,
+          "listing_image_id": 8975374203,
           "rank": 1,
-          "url_fullxfull": "https://i.etsystatic.com/68595983/r/il/0689ca/8859727337/il_fullxfull.8859727337_4qid.jpg"
+          "url_fullxfull": "https://i.etsystatic.com/68595983/r/il/1c2182/8975374203/il_fullxfull.8975374203_m4as.jpg"
         }
       ],
-      "public_image_count": 1,
+      "public_image_count": 4,
       "original_creation_timestamp": 1794017017,
       "created_timestamp": 1794017023,
       "creation_timestamp": 1794017023,
-      "updated_timestamp": 1794020242,
-      "last_modified_timestamp": 1794020242
+      "updated_timestamp": 1795641415,
+      "last_modified_timestamp": 1795641415
     },
     {
       "listing_id": 4611591465,
@@ -1353,8 +1353,8 @@
       "original_creation_timestamp": 1794009766,
       "created_timestamp": 1794009769,
       "creation_timestamp": 1794009769,
-      "updated_timestamp": 1795638552,
-      "last_modified_timestamp": 1795638552
+      "updated_timestamp": 1795641570,
+      "last_modified_timestamp": 1795641570
     },
     {
       "listing_id": 4611339588,
@@ -1461,12 +1461,12 @@
           "url_fullxfull": "https://i.etsystatic.com/68595983/r/il/312511/8927505060/il_fullxfull.8927505060_9han.jpg"
         }
       ],
-      "public_image_count": 2,
+      "public_image_count": 4,
       "original_creation_timestamp": 1793937783,
       "created_timestamp": 1793937787,
       "creation_timestamp": 1793937787,
-      "updated_timestamp": 1795640374,
-      "last_modified_timestamp": 1795640374
+      "updated_timestamp": 1795641017,
+      "last_modified_timestamp": 1795641017
     },
     {
       "listing_id": 4610934908,
@@ -1829,8 +1829,8 @@
       "original_creation_timestamp": 1793757757,
       "created_timestamp": 1793757763,
       "creation_timestamp": 1793757763,
-      "updated_timestamp": 1795637664,
-      "last_modified_timestamp": 1795637664
+      "updated_timestamp": 1795641302,
+      "last_modified_timestamp": 1795641302
     },
     {
       "listing_id": 4609346637,
@@ -1913,8 +1913,8 @@
       "original_creation_timestamp": 1793693095,
       "created_timestamp": 1793693099,
       "creation_timestamp": 1793693099,
-      "updated_timestamp": 1795637661,
-      "last_modified_timestamp": 1795637661
+      "updated_timestamp": 1795641542,
+      "last_modified_timestamp": 1795641542
     },
     {
       "listing_id": 4608754904,
@@ -2025,8 +2025,8 @@
       "original_creation_timestamp": 1793664176,
       "created_timestamp": 1793664180,
       "creation_timestamp": 1793664180,
-      "updated_timestamp": 1795637669,
-      "last_modified_timestamp": 1795637669
+      "updated_timestamp": 1795640831,
+      "last_modified_timestamp": 1795640831
     },
     {
       "listing_id": 4608319309,
@@ -2977,8 +2977,8 @@
       "original_creation_timestamp": 1793160152,
       "created_timestamp": 1793160158,
       "creation_timestamp": 1793160158,
-      "updated_timestamp": 1795638258,
-      "last_modified_timestamp": 1795638258
+      "updated_timestamp": 1795641652,
+      "last_modified_timestamp": 1795641652
     },
     {
       "listing_id": 4604600487,
@@ -3005,8 +3005,8 @@
       "original_creation_timestamp": 1793152906,
       "created_timestamp": 1793152910,
       "creation_timestamp": 1793152910,
-      "updated_timestamp": 1795638254,
-      "last_modified_timestamp": 1795638254
+      "updated_timestamp": 1795641550,
+      "last_modified_timestamp": 1795641550
     },
     {
       "listing_id": 4604088052,
@@ -3145,8 +3145,8 @@
       "original_creation_timestamp": 1793066517,
       "created_timestamp": 1793066521,
       "creation_timestamp": 1793066521,
-      "updated_timestamp": 1795638252,
-      "last_modified_timestamp": 1795638252
+      "updated_timestamp": 1795641678,
+      "last_modified_timestamp": 1795641678
     },
     {
       "listing_id": 4603854876,
@@ -3201,8 +3201,8 @@
       "original_creation_timestamp": 1793034219,
       "created_timestamp": 1793034223,
       "creation_timestamp": 1793034223,
-      "updated_timestamp": 1795638246,
-      "last_modified_timestamp": 1795638246
+      "updated_timestamp": 1795641396,
+      "last_modified_timestamp": 1795641396
     },
     {
       "listing_id": 4603513175,
@@ -3313,8 +3313,8 @@
       "original_creation_timestamp": 1792980177,
       "created_timestamp": 1792980181,
       "creation_timestamp": 1792980181,
-      "updated_timestamp": 1795638190,
-      "last_modified_timestamp": 1795638190
+      "updated_timestamp": 1795641323,
+      "last_modified_timestamp": 1795641323
     },
     {
       "listing_id": 4603152577,
@@ -3397,8 +3397,8 @@
       "original_creation_timestamp": 1792915552,
       "created_timestamp": 1792915555,
       "creation_timestamp": 1792915555,
-      "updated_timestamp": 1795637761,
-      "last_modified_timestamp": 1795637761
+      "updated_timestamp": 1795641209,
+      "last_modified_timestamp": 1795641209
     },
     {
       "listing_id": 4602689637,
@@ -3481,8 +3481,8 @@
       "original_creation_timestamp": 1792893839,
       "created_timestamp": 1792893843,
       "creation_timestamp": 1792893843,
-      "updated_timestamp": 1795637759,
-      "last_modified_timestamp": 1795637759
+      "updated_timestamp": 1795641450,
+      "last_modified_timestamp": 1795641450
     },
     {
       "listing_id": 4602584413,
@@ -3705,8 +3705,8 @@
       "original_creation_timestamp": 1792773631,
       "created_timestamp": 1792773635,
       "creation_timestamp": 1792773635,
-      "updated_timestamp": 1795638183,
-      "last_modified_timestamp": 1795638183
+      "updated_timestamp": 1795641627,
+      "last_modified_timestamp": 1795641627
     },
     {
       "listing_id": 4601683879,
@@ -4181,8 +4181,8 @@
       "original_creation_timestamp": 1792540840,
       "created_timestamp": 1792540844,
       "creation_timestamp": 1792540844,
-      "updated_timestamp": 1795638689,
-      "last_modified_timestamp": 1795638689
+      "updated_timestamp": 1795641772,
+      "last_modified_timestamp": 1795641772
     },
     {
       "listing_id": 4599144046,
@@ -4265,8 +4265,8 @@
       "original_creation_timestamp": 1792463736,
       "created_timestamp": 1792463739,
       "creation_timestamp": 1792463739,
-      "updated_timestamp": 1795637756,
-      "last_modified_timestamp": 1795637756
+      "updated_timestamp": 1795641403,
+      "last_modified_timestamp": 1795641403
     },
     {
       "listing_id": 4599143916,
@@ -4349,8 +4349,8 @@
       "original_creation_timestamp": 1792454503,
       "created_timestamp": 1792454507,
       "creation_timestamp": 1792454507,
-      "updated_timestamp": 1795637674,
-      "last_modified_timestamp": 1795637674
+      "updated_timestamp": 1795641395,
+      "last_modified_timestamp": 1795641395
     },
     {
       "listing_id": 4598792067,
