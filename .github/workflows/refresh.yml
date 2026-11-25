@@ -36,6 +36,125 @@ jobs:
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
+          name: github-pages-${{ github.run_id }}-${{ github.run_attempt }}
           path: '.'
+          retention-days: 1
+      - name: Verify uploaded site is visible
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import json
+          import os
+          import re
+          import signal
+          import time
+          from http.client import HTTPException
+          from urllib.error import HTTPError, URLError
+          from urllib.parse import quote
+          from urllib.request import HTTPRedirectHandler, Request, build_opener
+
+          def fail():
+              raise SystemExit("Website upload metadata verification failed.")
+
+          def timed_out(*_):
+              raise SystemExit("Website upload metadata did not become ready within 45 seconds.")
+
+          signal.signal(signal.SIGALRM, timed_out)
+          signal.setitimer(signal.ITIMER_REAL, 45)
+          deadline = time.monotonic() + 45
+          repository = os.environ.get("GITHUB_REPOSITORY", "")
+          run_id = os.environ.get("GITHUB_RUN_ID", "")
+          attempt = os.environ.get("GITHUB_RUN_ATTEMPT", "")
+          head_sha = os.environ.get("GITHUB_SHA", "")
+          if (repository != "lance19c/lance19c.github.io"
+                  or not re.fullmatch(r"[1-9][0-9]*", run_id)
+                  or not re.fullmatch(r"[1-9][0-9]*", attempt)
+                  or not re.fullmatch(r"[0-9a-f]{40}", head_sha)):
+              fail()
+          name = f"github-pages-{run_id}-{attempt}"
+          url = (f"https://api.github.com/repos/{repository}/actions/runs/{run_id}/artifacts"
+                 f"?name={quote(name, safe='')}&per_page=100")
+
+          class NoRedirects(HTTPRedirectHandler):
+              def redirect_request(self, *_args, **_kwargs):
+                  return None
+
+          opener = build_opener(NoRedirects())
+
+          def strict_object(pairs):
+              decoded = {}
+              for key, value in pairs:
+                  if key in decoded:
+                      fail()
+                  decoded[key] = value
+              return decoded
+
+          def reject_constant(_value):
+              fail()
+
+          def visible_artifact():
+              request = Request(url, method="GET", headers={
+                  "Accept": "application/vnd.github+json",
+                  "X-GitHub-Api-Version": "2022-11-28",
+                  "User-Agent": "CowlingCatalog-Pages-visibility-check",
+              })
+              try:
+                  with opener.open(request, timeout=min(5, max(0.1, deadline - time.monotonic()))) as response:
+                      if response.status != 200 or response.geturl() != url:
+                          fail()
+                      body = response.read(262145)
+              except HTTPError as error:
+                  retry = error.code in (404, 429) or 500 <= error.code <= 599
+                  error.close()
+                  if retry:
+                      return None
+                  fail()
+              except (URLError, OSError):
+                  return None
+              except HTTPException:
+                  fail()
+              if len(body) > 262144:
+                  fail()
+              try:
+                  payload = json.loads(body, object_pairs_hook=strict_object, parse_constant=reject_constant)
+              except (ValueError, UnicodeError, RecursionError):
+                  fail()
+              if not isinstance(payload, dict):
+                  fail()
+              count, artifacts = payload.get("total_count"), payload.get("artifacts")
+              if type(count) is not int or count < 0 or not isinstance(artifacts, list):
+                  fail()
+              if count == 0 and not artifacts:
+                  return None
+              if count != 1 or len(artifacts) != 1 or not isinstance(artifacts[0], dict):
+                  fail()
+              artifact = artifacts[0]
+              workflow = artifact.get("workflow_run")
+              if (artifact.get("name") != name
+                      or type(artifact.get("id")) is not int or artifact["id"] <= 0
+                      or type(artifact.get("size_in_bytes")) is not int or artifact["size_in_bytes"] <= 0
+                      or artifact.get("expired") is not False
+                      or not isinstance(workflow, dict)
+                      or type(workflow.get("id")) is not int or workflow["id"] != int(run_id)
+                      or workflow.get("head_sha") != head_sha):
+                  fail()
+              return artifact["id"]
+
+          previous = None
+          while time.monotonic() < deadline:
+              current = visible_artifact()
+              if current is not None and current == previous:
+                  signal.setitimer(signal.ITIMER_REAL, 0)
+                  print("Website upload metadata verified in two consecutive checks.")
+                  break
+              if current is not None and previous is not None and current != previous:
+                  fail()
+              previous = current
+              time.sleep(min(2, max(0, deadline - time.monotonic())))
+          else:
+              timed_out()
+          PY
       - name: Publish website
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346 # v5.0.1
+        with:
+          artifact_name: github-pages-${{ github.run_id }}-${{ github.run_attempt }}
