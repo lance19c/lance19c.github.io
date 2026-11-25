@@ -10,6 +10,7 @@ import re
 import urllib.request
 from urllib.parse import urlsplit
 import xml.etree.ElementTree as ET
+from inventory import catalog_inputs, normalize_snapshot, strict_json
 
 BASE='https://lance19c.github.io'
 SHOP='https://www.etsy.com/shop/CowlingTradingCo'
@@ -73,13 +74,28 @@ def promotable(product):
     except (ValueError, TypeError):
         return False
 
+def new_schedule_exclusions():
+    path=ROOT/'promotion-history.json'
+    if not path.exists():return set()
+    value=strict_json(path.read_bytes())
+    if (type(value) is not dict or set(value)!={'version','source','observed_on','observed_pins','listing_ids'}
+            or type(value['version']) is not int or value['version']!=1
+            or value['source']!='native Pinterest account outbound-link audit'
+            or type(value['observed_on']) is not str or re.fullmatch('[0-9]{4}-[0-9]{2}-[0-9]{2}',value['observed_on']) is None
+            or type(value['observed_pins']) is not int or type(value['listing_ids']) is not list
+            or not all(type(i) is str and re.fullmatch('[1-9][0-9]{0,19}',i) is not None for i in value['listing_ids'])
+            or len(set(value['listing_ids']))!=len(value['listing_ids']) or value['observed_pins']<len(value['listing_ids'])):
+        raise ValueError('promotion history is invalid; prior site retained')
+    return set(value['listing_ids'])
+
 def schedule(products,state,now):
     """At most two newly exposed feed items per UTC day; stable IDs prevent repeats."""
+    excluded=new_schedule_exclusions()
     state=dict(state);published=dict(state.get('published',{}));day=now.date().isoformat()
     room=max(0,LIMIT-sum(v[:10]==day for v in published.values()))
     for ident in products:
         if room<=0:break
-        if ident not in published and promotable(products[ident]):
+        if ident not in published and ident not in excluded and promotable(products[ident]):
             published[ident]=now.isoformat();room-=1
     state['published']=published
     return state
@@ -88,36 +104,56 @@ CSS='''body{margin:0;background:#f7f4ed;color:#173e38;font:17px/1.65 system-ui,s
 
 def shell(title,body,verify=''):
     meta=f'<meta name="p:domain_verify" content="{html.escape(verify,quote=True)}">' if verify else ''
-    return f'<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>{html.escape(title)} | Cowling Trading Co</title>{meta}<link rel="alternate" type="application/rss+xml" href="{BASE}/feed.xml"><style>{CSS}</style></head><body><header><a class="brand" href="/">COWLING TRADING CO</a><a href="{SHOP}">Shop on Etsy</a></header><main>{body}</main><footer>Original designs, printed to order through our print partners. Design created with AI assistance from original prompts. Purchases, current prices, shipping, returns and availability are handled on Etsy. <a href="{SHOP}">Visit our Etsy shop</a>.</footer></body></html>'
+    return f'<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>{html.escape(title)} | Cowling Trading Co</title>{meta}<link rel="alternate" type="application/rss+xml" href="{BASE}/feed.xml"><style>{CSS}</style></head><body><header><a class="brand" href="/">COWLING TRADING CO</a><a href="{SHOP}">Shop on Etsy</a></header><main>{body}</main><footer>Original designs. Design created with AI assistance from original prompts. Purchases, current prices, product formats, delivery, returns and availability are handled on Etsy. <a href="{SHOP}">Visit our Etsy shop</a>.</footer></body></html>'
 
 def render(products,state,verify=''):
+    products={ident:p for ident,p in products.items() if promotable(p)}
     out={};cards=[]
     for ident,p in products.items():
         title=html.escape(p['title']);image=html.escape(p['image'],quote=True);link=f'/products/{ident}.html'
         cards.append(f'<a class="card" href="{link}"><img src="{image}" alt="{title}" loading="lazy"><h2>{title}</h2><p>See details and current price on Etsy</p></a>')
-        body=f'<a href="/">All gifts</a><div class="product"><img src="{image}" alt="{title}"><div><p class="muted">PRINTED TO ORDER · SOLD ON ETSY</p><h1>{title}</h1><p>{html.escape(p["description"])}</p><a class="btn" href="{p["etsy"]}?utm_source=pinterest&amp;utm_medium=organic&amp;utm_campaign=cowling_catalog">View details &amp; buy on Etsy</a><p class="muted">Check Etsy for the selected size, finish, current price, delivery estimate and availability before ordering.</p></div></div>'
+        format_label={'digital':'DIGITAL DOWNLOAD · SOLD ON ETSY','physical':'PRINTED TO ORDER · SOLD ON ETSY'}.get(p.get('kind'),'DESIGN · SOLD ON ETSY')
+        detail='Check Etsy for the download format, included files, current price and availability before ordering.' if p.get('kind')=='digital' else 'Check Etsy for the product format, selected size, finish, current price, delivery estimate and availability before ordering.'
+        body=f'<a href="/">All gifts</a><div class="product"><img src="{image}" alt="{title}"><div><p class="muted">{format_label}</p><h1>{title}</h1><p>{html.escape(p["description"])}</p><a class="btn" href="{p["etsy"]}?utm_source=pinterest&amp;utm_medium=organic&amp;utm_campaign=cowling_catalog">View details &amp; buy on Etsy</a><p class="muted">{detail}</p></div></div>'
         out[f'products/{ident}.html']=shell(p['title'],body,verify)
-    out['index.html']=shell('Thoughtful gifts for home', '<p class="muted">COWLING TRADING CO</p><h1>A little character.<br>A place to call home.</h1><p class="lead">Explore our printed-to-order gifts and home accents. Find a design you like, then review the details and order securely through our Etsy shop.</p><div class="grid">'+''.join(cards)+'</div>',verify)
+    out['index.html']=shell('Thoughtful gifts for home', '<p class="muted">COWLING TRADING CO</p><h1>A little character.<br>A place to call home.</h1><p class="lead">Explore our original designs and gifts. Find a design you like, then review the details and order securely through our Etsy shop.</p><div class="grid">'+''.join(cards)+'</div>',verify)
     rss=ET.Element('rss',{'version':'2.0'});channel=ET.SubElement(rss,'channel')
     for key,val in [('title','Cowling Trading Co — new designs'),('link',BASE),('description','Our own products, with details and checkout on Etsy.')]:ET.SubElement(channel,key).text=val
     for ident,stamp in state.get('published',{}).items():
         if ident not in products or not promotable(products[ident]):continue
         p=products[ident];item=ET.SubElement(channel,'item');link=f'{BASE}/products/{ident}.html'
-        for key,val in [('title',p['title'][:100]),('link',link),('guid',link),('description',('Printed to order. Design created with AI assistance from original prompts. '+p['description'])[:500]),('pubDate',dt.datetime.fromisoformat(stamp).strftime('%a, %d %b %Y %H:%M:%S GMT'))]:ET.SubElement(item,key).text=val
+        for key,val in [('title',p['title'][:100]),('link',link),('guid',link),('description',(('Digital download. ' if p.get('kind')=='digital' else 'Printed to order. ' if p.get('kind')=='physical' else '')+'Design created with AI assistance from original prompts. '+p['description'])[:500]),('pubDate',dt.datetime.fromisoformat(stamp).strftime('%a, %d %b %Y %H:%M:%S GMT'))]:ET.SubElement(item,key).text=val
         ET.SubElement(item,'enclosure',{'url':p['image'],'type':'image/jpeg','length':'0'})
     out['feed.xml']=ET.tostring(rss,encoding='unicode',xml_declaration=True)
     return out
 
 def main():
-    req=urllib.request.Request(FEED,headers={'User-Agent':'CowlingTradingCoCatalog/1.0'})
-    with urllib.request.urlopen(req,timeout=30) as response:
-        if urlsplit(response.url).hostname not in ('www.etsy.com','etsy.com'):raise ValueError('unexpected feed destination')
-        raw=response.read(3_000_001)
-    products=parse(raw);statepath=ROOT/'state.json';state=json.loads(statepath.read_text()) if statepath.exists() else {}
-    now=dt.datetime.now(dt.timezone.utc);state=schedule(products,state,now)
+    statepath=ROOT/'state.json';state=json.loads(statepath.read_text()) if statepath.exists() else {}
+    now=dt.datetime.now(dt.timezone.utc)
+    seedpath=ROOT/'inventory-snapshot.json'
+    seed=normalize_snapshot(strict_json(seedpath.read_bytes()),(ROOT/'quality-policy.json').read_bytes(),now) if seedpath.exists() else None
+    rss_available=True
+    try:
+        req=urllib.request.Request(FEED,headers={'User-Agent':'CowlingTradingCoCatalog/1.0'})
+        with urllib.request.urlopen(req,timeout=30) as response:
+            if urlsplit(response.url).hostname not in ('www.etsy.com','etsy.com'):raise ValueError('unexpected feed destination')
+            raw=response.read(3_000_001)
+        rss_products=parse(raw)
+    except Exception:
+        if not seed or not seed['fresh']:raise ValueError('fresh own-shop source unavailable; previous site retained') from None
+        rss_products={};rss_available=False
+    products,eligible=catalog_inputs(rss_products,seed,state)
+    products={ident:p for ident,p in products.items() if promotable(p)}
+    state=schedule(eligible,state,now)
     verify=(ROOT/'pinterest-verification.txt').read_text().strip() if (ROOT/'pinterest-verification.txt').exists() else ''
     output=render(products,state,verify)
-    output['status.json']=json.dumps({'refreshed_at':now.isoformat(),'source':'public Etsy shop RSS','current_products':len(products),'daily_new_feed_limit':LIMIT,'feed_items':len(ET.fromstring(output['feed.xml']).findall('./channel/item'))},indent=2)+'\n'
+    output['status.json']=json.dumps({'refreshed_at':now.isoformat(),'source':('public Etsy shop RSS plus reviewed inventory snapshot' if rss_available else 'reviewed inventory snapshot; public RSS unavailable') if seed else 'public Etsy shop RSS',
+        'current_products':len(products),'rss_products':len(rss_products) if rss_available else None,'rss_source_verified':rss_available,'daily_new_feed_limit':LIMIT,
+        'feed_items':len(ET.fromstring(output['feed.xml']).findall('./channel/item')),
+        'inventory_snapshot':{key:seed[key] for key in ('observed_at','expires_at','fresh','captured_count','snapshot_sha256')} if seed else None,
+        'historical_snapshot_image_holds':sum(type(p.get('public_image_count')) is not int or p['public_image_count']<3 for p in seed['products'].values()) if seed else None,
+        'eligible_unintroduced':sum(ident not in state.get('published',{}) and ident not in new_schedule_exclusions() and promotable(p) for ident,p in eligible.items()),
+        'inventory_refresh_status':'not_observed_by_static_catalog'},indent=2)+'\n'
     # Validate all inputs before replacing any generated file. Keep product pages for
     # previously published Pins even when they drop out of Etsy's ten-item RSS window.
     for name,text in output.items():
