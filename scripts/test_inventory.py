@@ -183,3 +183,27 @@ class FreshInventoryFallbackTests(unittest.TestCase):
    root=Path(folder);(root/'index.html').write_text('last successful site')
    with self.assertRaises(ValueError):self.run_build(root,source)
    self.assertEqual((root/'index.html').read_text(),'last successful site');self.assertEqual((root/'state.json').read_text(),'{"published":{}}')
+
+
+class NativePromotionHistoryTests(unittest.TestCase):
+ def test_observed_pins_suppress_new_introductions_without_removing_existing_guids(self):
+  with tempfile.TemporaryDirectory() as folder:
+   root=Path(folder);(root/'quality-policy.json').write_bytes(POLICY)
+   history={'version':1,'source':'native Pinterest account outbound-link audit','observed_on':'2026-11-25','observed_pins':3,'listing_ids':['100','102']}
+   (root/'promotion-history.json').write_text(json.dumps(history))
+   products={str(i):{'id':str(i),'title':'Original mug','image':'https://i.etsystatic.com/own.jpg','description':'Own design','etsy':'https://www.etsy.com/listing/'+str(i)} for i in (100,102,103,104)}
+   state={'published':{'100':(NOW-dt.timedelta(days=1)).isoformat()}}
+   with patch.object(build,'ROOT',root):
+    result=build.schedule(products,state,NOW)
+    self.assertNotIn('102',result['published']);self.assertEqual(result['published']['100'],state['published']['100'])
+    self.assertEqual(len(result['published']),3)
+    links=[item.findtext('guid') for item in ET.fromstring(build.render(products,result)['feed.xml']).findall('./channel/item')]
+    self.assertIn('https://lance19c.github.io/products/100.html',links)
+    self.assertNotIn('https://lance19c.github.io/products/102.html',links)
+ def test_real_history_keeps_all_24_observed_listing_ids(self):
+  history=json.loads((Path(__file__).resolve().parents[1]/'promotion-history.json').read_text())
+  self.assertEqual(history['observed_pins'],25);self.assertEqual(len(set(history['listing_ids'])),24)
+ def test_malformed_history_cannot_silently_reset_duplicate_protection(self):
+  with tempfile.TemporaryDirectory() as folder:
+   Path(folder,'promotion-history.json').write_text('{"version":1}')
+   with patch.object(build,'ROOT',Path(folder)),self.assertRaises(ValueError):build.schedule({'100':{}},{},NOW)

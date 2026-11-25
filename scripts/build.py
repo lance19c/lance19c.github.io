@@ -74,13 +74,28 @@ def promotable(product):
     except (ValueError, TypeError):
         return False
 
+def new_schedule_exclusions():
+    path=ROOT/'promotion-history.json'
+    if not path.exists():return set()
+    value=strict_json(path.read_bytes())
+    if (type(value) is not dict or set(value)!={'version','source','observed_on','observed_pins','listing_ids'}
+            or type(value['version']) is not int or value['version']!=1
+            or value['source']!='native Pinterest account outbound-link audit'
+            or type(value['observed_on']) is not str or re.fullmatch('[0-9]{4}-[0-9]{2}-[0-9]{2}',value['observed_on']) is None
+            or type(value['observed_pins']) is not int or type(value['listing_ids']) is not list
+            or not all(type(i) is str and re.fullmatch('[1-9][0-9]{0,19}',i) is not None for i in value['listing_ids'])
+            or len(set(value['listing_ids']))!=len(value['listing_ids']) or value['observed_pins']<len(value['listing_ids'])):
+        raise ValueError('promotion history is invalid; prior site retained')
+    return set(value['listing_ids'])
+
 def schedule(products,state,now):
     """At most two newly exposed feed items per UTC day; stable IDs prevent repeats."""
+    excluded=new_schedule_exclusions()
     state=dict(state);published=dict(state.get('published',{}));day=now.date().isoformat()
     room=max(0,LIMIT-sum(v[:10]==day for v in published.values()))
     for ident in products:
         if room<=0:break
-        if ident not in published and promotable(products[ident]):
+        if ident not in published and ident not in excluded and promotable(products[ident]):
             published[ident]=now.isoformat();room-=1
     state['published']=published
     return state
@@ -137,7 +152,7 @@ def main():
         'feed_items':len(ET.fromstring(output['feed.xml']).findall('./channel/item')),
         'inventory_snapshot':{key:seed[key] for key in ('observed_at','expires_at','fresh','captured_count','snapshot_sha256')} if seed else None,
         'historical_snapshot_image_holds':sum(type(p.get('public_image_count')) is not int or p['public_image_count']<3 for p in seed['products'].values()) if seed else None,
-        'eligible_unintroduced':sum(ident not in state.get('published',{}) and promotable(p) for ident,p in eligible.items()),
+        'eligible_unintroduced':sum(ident not in state.get('published',{}) and ident not in new_schedule_exclusions() and promotable(p) for ident,p in eligible.items()),
         'inventory_refresh_connected':False},indent=2)+'\n'
     # Validate all inputs before replacing any generated file. Keep product pages for
     # previously published Pins even when they drop out of Etsy's ten-item RSS window.

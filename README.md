@@ -6,6 +6,8 @@ GitHub Actions refreshes it every six hours and deploys the generated site direc
 
 Pinterest's native RSS auto-publisher reads `https://lance19c.github.io/feed.xml` and saves to the account's New Home Gifts board. Website ownership was verified with the owner's explicitly approved public HTML tag. The application does not call Pinterest's create-Pin API or automate the Pinterest UI to create Pins.
 
+The verified native Pinterest audit on 2026-11-25 resolved all 25 created Pins to 24 unique listing IDs. `promotion-history.json` suppresses new introductions for those observed IDs, including manually created Pins. It does not remove existing feed GUIDs/timestamps or change any native Pin.
+
 The feed exposes at most two new product IDs per UTC day. Stable GUIDs and committed state prevent daily reposts. The public Etsy RSS source contains only the ten newest products. Optional `inventory-snapshot.json` can queue eligible products that are already active, without creating listings or paying listing fees. The snapshot is accepted only for the pinned own-shop identity and a complete allowlisted read. New historical introductions require at least three verified public images and stop seven days after the inventory observation. A renewed listing date never replaces original creation for the ornament cutoff. Existing GUIDs/timestamps are retained across refreshes. Product pages remain available when they leave that ten-product window, with checkout pointing to Etsy for current availability.
 
 Legacy high-shipping ornaments are excluded from the promotion feed. `quality-policy.json` can admit ornaments created after the cheaper supplier mapping is deployed. Existing old products are not silently migrated to another physical product or supplier.
