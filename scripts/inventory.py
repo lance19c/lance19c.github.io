@@ -10,7 +10,7 @@ from urllib.parse import urlsplit
 
 SHOP='https://www.etsy.com/shop/CowlingTradingCo'
 # Filled only from the reviewed authoritative own-shop capture; absent is OFF.
-SHOP_ID=None
+SHOP_ID=68595983
 SOURCE='etsy-active-listings-read'
 MAX_ROWS=200
 MAX_BYTES=4_000_000
