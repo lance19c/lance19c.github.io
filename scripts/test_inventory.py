@@ -175,7 +175,7 @@ class FreshInventoryFallbackTests(unittest.TestCase):
    root=Path(folder);self.run_build(root,source)
    status=json.loads((root/'status.json').read_text());state=json.loads((root/'state.json').read_text())
    self.assertEqual(len(state['published']),2);self.assertFalse(status['rss_source_verified']);self.assertIsNone(status['rss_products'])
-   self.assertTrue(status['inventory_snapshot']['fresh']);self.assertFalse(status['inventory_refresh_connected'])
+   self.assertTrue(status['inventory_snapshot']['fresh']);self.assertEqual(status['inventory_refresh_status'],'not_observed_by_static_catalog')
  def test_stale_snapshot_and_failed_public_rss_cannot_introduce_products_or_replace_site(self):
   observed=dt.datetime.now(dt.timezone.utc)-dt.timedelta(days=8)
   source=snapshot([row(100,original=int(observed.timestamp())-86400)]);source['observed_at']=observed.isoformat()

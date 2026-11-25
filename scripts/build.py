@@ -153,7 +153,7 @@ def main():
         'inventory_snapshot':{key:seed[key] for key in ('observed_at','expires_at','fresh','captured_count','snapshot_sha256')} if seed else None,
         'historical_snapshot_image_holds':sum(type(p.get('public_image_count')) is not int or p['public_image_count']<3 for p in seed['products'].values()) if seed else None,
         'eligible_unintroduced':sum(ident not in state.get('published',{}) and ident not in new_schedule_exclusions() and promotable(p) for ident,p in eligible.items()),
-        'inventory_refresh_connected':False},indent=2)+'\n'
+        'inventory_refresh_status':'not_observed_by_static_catalog'},indent=2)+'\n'
     # Validate all inputs before replacing any generated file. Keep product pages for
     # previously published Pins even when they drop out of Etsy's ten-item RSS window.
     for name,text in output.items():
