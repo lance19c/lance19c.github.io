@@ -35,11 +35,13 @@ jobs:
           fi
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
+        id: upload_site
         with:
           name: github-pages-${{ github.run_id }}-${{ github.run_attempt }}
           path: '.'
           retention-days: 1
       - name: Verify uploaded site is visible
+        id: verified_site
         shell: bash
         run: |
           python3 - <<'PY'
@@ -145,6 +147,8 @@ jobs:
               current = visible_artifact()
               if current is not None and current == previous:
                   signal.setitimer(signal.ITIMER_REAL, 0)
+                  with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as output:
+                      output.write(f"artifact_id={current}\n")
                   print("Website upload metadata verified in two consecutive checks.")
                   break
               if current is not None and previous is not None and current != previous:
@@ -155,6 +159,8 @@ jobs:
               timed_out()
           PY
       - name: Publish website
-        uses: actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346 # v5.0.1
-        with:
-          artifact_name: github-pages-${{ github.run_id }}-${{ github.run_attempt }}
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          PAGES_ARTIFACT_ID: ${{ steps.verified_site.outputs.artifact_id }}
+          PAGES_UPLOADED_ARTIFACT_ID: ${{ steps.upload_site.outputs.artifact_id }}
+        run: python3 scripts/deploy_pages.py --deploy
