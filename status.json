@@ -1,11 +1,11 @@
 {
-  "refreshed_at": "2026-11-25T21:47:47.851344+00:00",
+  "refreshed_at": "2026-11-26T08:30:18.158923+00:00",
   "source": "public Etsy shop RSS plus reviewed inventory snapshot",
   "current_products": 87,
   "rss_products": 10,
   "rss_source_verified": true,
   "daily_new_feed_limit": 2,
-  "feed_items": 15,
+  "feed_items": 17,
   "inventory_snapshot": {
     "observed_at": "2026-11-25T21:23:14.937062+00:00",
     "expires_at": "2026-12-02T21:23:14.937062+00:00",
@@ -14,6 +14,6 @@
     "snapshot_sha256": "365a5a078df6125b156e89f42d085521398f9a3b7f6df353c9b6225e94c5bce4"
   },
   "historical_snapshot_image_holds": 19,
-  "eligible_unintroduced": 64,
+  "eligible_unintroduced": 62,
   "inventory_refresh_status": "not_observed_by_static_catalog"
 }
